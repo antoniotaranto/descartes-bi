@@ -3,7 +3,7 @@
 *.pyo
 settings_local.py
 *.swp
-*.sqlite
+*.sqlite?
 /venv/
 /descartesEnv/
 .DS_Store
