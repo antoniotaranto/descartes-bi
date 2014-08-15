@@ -30,7 +30,8 @@ class ChartBackend(object):
             setattr(self, option['name'], self.option_values.get(option['name'], option.get('default')))
 
     def render(self, request):
-        """Each backend must override this method. Method must return an
+        """
+        Each backend must override this method. Method must return an
         HttpResponse or subclass, which is passed directly to the calling
         view.
         """

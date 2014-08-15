@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
-import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
 
 
 class Migration(SchemaMigration):
-
     def forwards(self, orm):
         # Deleting model 'FilterExtra'
         db.delete_table(u'reports_filterextra')
@@ -27,7 +25,6 @@ class Migration(SchemaMigration):
         db.add_column(u'reports_filter', 'filter_type',
                       self.gf('django.db.models.fields.CharField')(default=1, max_length=2),
                       keep_default=False)
-
 
         # Changing field 'Filter.description'
         db.alter_column(u'reports_filter', 'description', self.gf('django.db.models.fields.CharField')(default='', max_length=32))
@@ -54,7 +51,7 @@ class Migration(SchemaMigration):
 
         # User chose to not deal with backwards NULL issues for 'Filter.type'
         raise RuntimeError("Cannot reverse this migration. 'Filter.type' and its values cannot be restored.")
-        
+
         # The following code is provided here to aid in writing a correct migration        # Adding field 'Filter.type'
         db.add_column(u'reports_filter', 'type',
                       self.gf('django.db.models.fields.CharField')(max_length=2),

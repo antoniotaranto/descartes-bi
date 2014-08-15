@@ -28,7 +28,7 @@ def get_allowed_object_for_user(user):
     try:
         user = User.objects.get(username=user)
 
-        #staff gets all reports & menuitems
+        # staff gets all reports & menuitems
         if user.is_staff:
             return {
                 'reports': Report.objects.all(),
@@ -43,7 +43,7 @@ def get_allowed_object_for_user(user):
                         reports_allowed.append(report)
 
             except:
-                #Group does have permissions
+                # Group does have permissions
                 pass
         try:
             up = UserPermission.objects.get(user=user)
@@ -60,10 +60,10 @@ def get_allowed_object_for_user(user):
                         reports_allowed.remove(report)
 
         except:
-            #Not User permission for this user
+            # Not User permission for this user
             pass
     except:
-        #unkown user or anonymous
+        # unkown user or anonymous
         pass
 
     for report in reports_allowed:

@@ -1,23 +1,19 @@
 # -*- coding: utf-8 -*-
-import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
 
 
 class Migration(SchemaMigration):
-
     def forwards(self, orm):
         # Adding field 'Serie.data_source'
         db.add_column(u'reports_serie', 'data_source',
                       self.gf('django.db.models.fields.related.ForeignKey')(default=1, to=orm['db_drivers.DataSource']),
                       keep_default=False)
 
-
     def backwards(self, orm):
         # Deleting field 'Serie.data_source'
         db.delete_column(u'reports_serie', 'data_source_id')
-
 
     models = {
         u'auth.group': {

@@ -17,12 +17,12 @@
 #
 
 from django.conf import settings
-from django.conf.urls.defaults import patterns, url
+from django.conf.urls import patterns, url
 from django.views.generic.base import RedirectView
 
 urlpatterns = patterns('common.views',
-    url(r'^set_language/$', 'set_language', (), name='set_language'),
-    url(r'^about/$', 'about', (), 'about_view'),
+    url(r'^set_language/$', 'set_language', name='set_language'),
+    url(r'^about/$', 'about', name='about_view'),
 )
 
 urlpatterns += patterns('',

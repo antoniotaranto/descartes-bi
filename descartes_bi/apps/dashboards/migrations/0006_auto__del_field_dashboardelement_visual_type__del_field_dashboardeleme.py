@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
-import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
 
 
 class Migration(SchemaMigration):
-
     def forwards(self, orm):
         # Deleting field 'DashboardElement.visual_type'
         db.delete_column(u'dashboards_dashboardelement', 'visual_type')
@@ -17,12 +15,11 @@ class Migration(SchemaMigration):
         # Deleting field 'DashboardElement.filtersets'
         db.delete_column(u'dashboards_dashboardelement', 'filtersets_id')
 
-
     def backwards(self, orm):
 
         # User chose to not deal with backwards NULL issues for 'DashboardElement.visual_type'
         raise RuntimeError("Cannot reverse this migration. 'DashboardElement.visual_type' and its values cannot be restored.")
-        
+
         # The following code is provided here to aid in writing a correct migration        # Adding field 'DashboardElement.visual_type'
         db.add_column(u'dashboards_dashboardelement', 'visual_type',
                       self.gf('django.db.models.fields.PositiveIntegerField')(),
@@ -37,7 +34,6 @@ class Migration(SchemaMigration):
         db.add_column(u'dashboards_dashboardelement', 'filtersets',
                       self.gf('django.db.models.fields.related.ForeignKey')(to=orm['reports.Filterset'], null=True, blank=True),
                       keep_default=False)
-
 
     models = {
         u'dashboards.dashboard': {

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
@@ -184,7 +183,6 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'reports', ['GroupPermissionFilterValues'])
 
-
     def backwards(self, orm):
         # Deleting model 'Filter'
         db.delete_table(u'reports_filter')
@@ -236,7 +234,6 @@ class Migration(SchemaMigration):
 
         # Deleting model 'GroupPermissionFilterValues'
         db.delete_table(u'reports_grouppermissionfiltervalues')
-
 
     models = {
         u'auth.group': {

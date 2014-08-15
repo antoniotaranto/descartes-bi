@@ -1,23 +1,19 @@
 # -*- coding: utf-8 -*-
-import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
 
 
 class Migration(SchemaMigration):
-
     def forwards(self, orm):
         # Adding field 'DashboardElement.height'
         db.add_column(u'dashboards_dashboardelement', 'height',
                       self.gf('django.db.models.fields.PositiveIntegerField')(default=300),
                       keep_default=False)
 
-
     def backwards(self, orm):
         # Deleting field 'DashboardElement.height'
         db.delete_column(u'dashboards_dashboardelement', 'height')
-
 
     models = {
         u'dashboards.dashboard': {

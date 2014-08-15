@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
-import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
 
 
 class Migration(SchemaMigration):
-
     def forwards(self, orm):
         # Deleting model 'SeriesStatistic'
         db.delete_table(u'reports_seriesstatistic')
@@ -77,7 +75,6 @@ class Migration(SchemaMigration):
 
         # Deleting field 'Serie.last_execution_time'
         db.delete_column(u'reports_serie', 'last_execution_time')
-
 
     def backwards(self, orm):
         # Adding model 'SeriesStatistic'
@@ -190,7 +187,6 @@ class Migration(SchemaMigration):
         db.add_column(u'reports_serie', 'last_execution_time',
                       self.gf('django.db.models.fields.PositiveIntegerField')(null=True, blank=True),
                       keep_default=False)
-
 
     models = {
         u'auth.group': {

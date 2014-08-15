@@ -66,7 +66,6 @@ class Website(ChartBackend):
             'content': content,
             'form': form,
         }
-        #logger.debug('context: %s' % context)
 
         return render_to_response('charts/website/website.html', context,
             context_instance=RequestContext(request))

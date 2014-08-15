@@ -15,8 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with descartes-bi. If not, see <http://www.gnu.org/licenses/>.
 #
-from django.conf.urls.defaults import patterns, url
+from django.conf.urls import patterns, url
 
 urlpatterns = patterns('reports.views',
-    url(r'^ajax/report/(?P<report_id>\d+)/$', 'ajax_report', (), 'ajax_report_view'),
+    url(r'^ajax/report/(?P<report_id>\d+)/$', 'ajax_report', name='ajax_report_view'),
 )

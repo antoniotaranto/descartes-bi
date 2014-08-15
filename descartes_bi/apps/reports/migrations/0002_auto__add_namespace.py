@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
-import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
 
 
 class Migration(SchemaMigration):
-
     def forwards(self, orm):
         # Adding model 'Namespace'
         db.create_table(u'reports_namespace', (
@@ -31,14 +29,12 @@ class Migration(SchemaMigration):
         ))
         db.create_unique(m2m_table_name, ['namespace_id', 'menuitem_id'])
 
-
     def backwards(self, orm):
         # Deleting model 'Namespace'
         db.delete_table(u'reports_namespace')
 
         # Removing M2M table for field view on 'Namespace'
         db.delete_table(db.shorten_name(u'reports_namespace_view'))
-
 
     models = {
         u'auth.group': {

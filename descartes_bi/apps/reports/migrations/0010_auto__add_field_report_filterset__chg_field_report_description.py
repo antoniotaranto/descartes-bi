@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
-import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
 
 
 class Migration(SchemaMigration):
-
     def forwards(self, orm):
         # Adding field 'Report.filterset'
         db.add_column(u'reports_report', 'filterset',
@@ -32,7 +30,6 @@ class Migration(SchemaMigration):
             ('filterset', models.ForeignKey(orm[u'reports.filterset'], null=False))
         ))
         db.create_unique(m2m_table_name, ['report_id', 'filterset_id'])
-
 
         # Changing field 'Report.description'
         db.alter_column(u'reports_report', 'description', self.gf('django.db.models.fields.TextField')(null=True))

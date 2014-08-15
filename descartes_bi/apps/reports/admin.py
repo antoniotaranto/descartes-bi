@@ -17,6 +17,7 @@ from __future__ import absolute_import
 #    You should have received a copy of the GNU General Public License
 #    along with descartes-bi.  If not, see <http://www.gnu.org/licenses/>.
 #
+
 import re
 
 from django import forms
@@ -28,8 +29,8 @@ from .models import (Filter, Filterset, FiltersetFilters,
     GroupPermission, Menuitem, Report, ReportSeries, Serie, UserPermission)
 
 
-#clone_objects Copyright (C) 2009  Rune Bromer
-#http://www.bromer.eu/2009/05/23/a-generic-copyclone-action-for-django-11/
+# clone_objects Copyright (C) 2009  Rune Bromer
+# http://www.bromer.eu/2009/05/23/a-generic-copyclone-action-for-django-11/
 def clone_objects(objects, title_fieldnames):
     def clone(from_object, title_fieldnames):
         args = dict([(fld.name, getattr(from_object, fld.name))

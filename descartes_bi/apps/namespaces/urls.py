@@ -16,9 +16,9 @@
 #    along with descartes-bi.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from django.conf.urls.defaults import patterns, url
+from django.conf.urls import patterns, url
 
 urlpatterns = patterns('namespaces.views',
-    url(r'^$', 'node_view', (), 'home_view'),
-    url(r'^node/(?P<node_pk>\d+)/$', 'node_view', (), 'node_view'),
+    url(r'^$', 'node_view', name='home_view'),
+    url(r'^node/(?P<node_pk>\d+)/$', 'node_view', name='node_view'),
 )

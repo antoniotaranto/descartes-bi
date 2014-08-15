@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
@@ -21,7 +20,6 @@ class Migration(SchemaMigration):
                       self.gf('django.db.models.fields.CharField')(default='St', max_length=8),
                       keep_default=False)
 
-
     def backwards(self, orm):
         # Adding field 'Serie.tick_format'
         db.add_column(u'reports_serie', 'tick_format',
@@ -33,7 +31,6 @@ class Migration(SchemaMigration):
 
         # Deleting field 'Serie.tick_format2'
         db.delete_column(u'reports_serie', 'tick_format2')
-
 
     models = {
         u'auth.group': {

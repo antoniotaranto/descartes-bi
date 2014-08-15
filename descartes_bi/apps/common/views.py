@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)
 
 
 def error500(request, template_name='500.html'):
-    #TODO: if user is admin include debug info
+    # TODO: if user is admin include debug info
     t = loader.get_template(template_name)
 
     return http.HttpResponseServerError(t.render(RequestContext(request, {
@@ -61,7 +61,7 @@ def get_svn_revision(path=None):
 
 
 def set_language(request):
-    if request.method == "GET":
+    if request.method == 'GET':
         request.session['django_language'] = request.GET.get('language', 'en')
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
@@ -73,11 +73,13 @@ def home(request):
 
 
 def about(request):
-    return render_to_response('about.html', {'revision': get_svn_revision(settings.PROJECT_ROOT)},
+    return render_to_response('about.html', {'revision': get_svn_revision(settings.BASE_DIR)},
         context_instance=RequestContext(request))
 
 
 def get_project_root():
-    """ get the project root directory """
+    """
+    Get the project root directory
+    """
     settings_mod = __import__(settings.SETTINGS_MODULE, {}, {}, [''])
     return os.path.dirname(os.path.abspath(settings_mod.__file__))

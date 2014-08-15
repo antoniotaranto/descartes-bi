@@ -30,10 +30,6 @@ class FilterForm(forms.Form):
         for filterset_filter in filterset.filterset_filters.all():
             if filterset_filter.filter.filter_type == FILTER_TYPE_DATE:
                 filterset_filter.filter.execute_function()
-                #self.fields[filterset_filter.name] = forms.DateField(
-                #    ('%m/%d/%Y',), initial=filterset_filter.default, required=False,
-                #    label=filterset_filter.label, widget=forms.DateInput(format='%m/%d/%Y', attrs={'size': '10'})
-                #)
                 self.fields[filterset_filter.filter.name] = forms.DateField(
                     initial=filterset_filter.filter.default, required=False,
                     label=filterset_filter.filter.label, widget=forms.DateInput(attrs={'size': '10'})
@@ -45,10 +41,6 @@ class FilterForm(forms.Form):
                         choices.append(choice)
                 except:
                     choices = eval(filterset_filter.filter.options, {})
-
-                #if filterset_filter.filter in results:
-                #    if 'default' in results[filterset_filter.filter]:
-                #        filterset_filter.filter.default = results[filterset_filter.filter]['default']
 
                 self.fields[filterset_filter.filter.name] = forms.ChoiceField(
                     initial=filterset_filter.filter.default, required=False,

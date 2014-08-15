@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
-import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
 
 
 class Migration(SchemaMigration):
-
     def forwards(self, orm):
         # Adding model 'Server'
         db.create_table(u'db_drivers_server', (
@@ -40,7 +38,6 @@ class Migration(SchemaMigration):
                       self.gf('django.db.models.fields.related.ForeignKey')(default=1, to=orm['db_drivers.Server']),
                       keep_default=False)
 
-
     def backwards(self, orm):
         # Deleting model 'Server'
         db.delete_table(u'db_drivers_server')
@@ -68,7 +65,7 @@ class Migration(SchemaMigration):
 
         # User chose to not deal with backwards NULL issues for 'DataSource.backend'
         raise RuntimeError("Cannot reverse this migration. 'DataSource.backend' and its values cannot be restored.")
-        
+
         # The following code is provided here to aid in writing a correct migration        # Adding field 'DataSource.backend'
         db.add_column(u'db_drivers_datasource', 'backend',
                       self.gf('django.db.models.fields.PositiveIntegerField')(),
@@ -76,7 +73,6 @@ class Migration(SchemaMigration):
 
         # Deleting field 'DataSource.server'
         db.delete_column(u'db_drivers_datasource', 'server_id')
-
 
     models = {
         u'db_drivers.datasource': {

@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
-import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
 
 
 class Migration(SchemaMigration):
-
     def forwards(self, orm):
         # Deleting model 'Selected_report'
         db.delete_table(u'dashboards_selected_report')
@@ -19,7 +17,6 @@ class Migration(SchemaMigration):
 
         # Deleting field 'DashboardWidget.refresh_rate'
         db.delete_column(u'dashboards_dashboardwidget', 'refresh_rate')
-
 
     def backwards(self, orm):
         # Adding model 'Selected_report'
@@ -50,15 +47,13 @@ class Migration(SchemaMigration):
         ))
         db.create_unique(m2m_table_name, ['dash_id', 'selected_report_id'])
 
-
         # User chose to not deal with backwards NULL issues for 'DashboardWidget.refresh_rate'
         raise RuntimeError("Cannot reverse this migration. 'DashboardWidget.refresh_rate' and its values cannot be restored.")
-        
+
         # The following code is provided here to aid in writing a correct migration        # Adding field 'DashboardWidget.refresh_rate'
         db.add_column(u'dashboards_dashboardwidget', 'refresh_rate',
                       self.gf('django.db.models.fields.PositiveSmallIntegerField')(),
                       keep_default=False)
-
 
     models = {
         u'dashboards.dashboard': {

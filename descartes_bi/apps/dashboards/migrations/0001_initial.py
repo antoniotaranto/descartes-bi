@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
-import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
 
 
 class Migration(SchemaMigration):
-
     def forwards(self, orm):
         # Adding model 'Selected_report'
         db.create_table(u'dashboards_selected_report', (
@@ -57,7 +55,6 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'dashboards', ['DashboardWidget'])
 
-
     def backwards(self, orm):
         # Deleting model 'Selected_report'
         db.delete_table(u'dashboards_selected_report')
@@ -73,7 +70,6 @@ class Migration(SchemaMigration):
 
         # Deleting model 'DashboardWidget'
         db.delete_table(u'dashboards_dashboardwidget')
-
 
     models = {
         u'dashboards.dash': {

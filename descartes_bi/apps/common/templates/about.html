@@ -1,11 +1,12 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+
 {% load i18n %}
 {% load static %}
+
 {% load project_tags %}
-{% block keywords %}
-{% endblock %}
-{% block title %} :: {% trans "About this program" %}{% endblock %}
-{% block banner %}{% trans "About this program" %}{% endblock %}
+
+{% block title %} :: {% trans 'About this program' %}{% endblock %}
+{% block banner %}{% trans 'About this program' %}{% endblock %}
 
 {% block base_content %}
     <div class="row-fluid">
@@ -15,9 +16,9 @@
         <h1><strong>{% project_name %}</strong></h1>
         <h2><strong>{% trans 'A Web based business intelligence software' %}</strong></h2>
         <a style="color: blue;" href="http://github.com/rosarior/descartes-bi">{% trans 'http://github.com/rosarior/descartes-bi' %}</a><br />
-        {% trans 'Copyright (C) 2010-2013 Roberto Rosario' %}<br />
+        {% trans 'Copyright (C) 2010 Roberto Rosario' %}<br />
         {% trans 'roberto.rosario.gonzalez@gmail.com' %}<br />
-        {% trans 'Released under the GPL V3' %}<br />
+        {% trans 'Released under the Apache 2.0 License' %}<br />
         </div>
     </div>
 {% endblock base_content %}
