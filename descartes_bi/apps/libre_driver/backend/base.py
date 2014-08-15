@@ -4,6 +4,7 @@ LIBRE database backend for Django.
 #Each of these API functions, except connection.close(), raises
 #ImproperlyConfigured.
 """
+
 import logging
 
 from django.core.exceptions import ImproperlyConfigured
@@ -18,9 +19,9 @@ logger = logging.getLogger(__name__)
 
 
 def complain(*args, **kwargs):
-    raise ImproperlyConfigured("settings.DATABASES is improperly configured. "
-                               "Please supply the ENGINE value. Check "
-                               "settings documentation for more details.")
+    raise ImproperlyConfigured('settings.DATABASES is improperly configured. '
+                               'Please supply the ENGINE value. Check '
+                               'settings documentation for more details.')
 
 
 def ignore(*args, **kwargs):
@@ -37,7 +38,7 @@ class IntegrityError(DatabaseError):
 
 class DatabaseOperations(BaseDatabaseOperations):
     quote_name = complain
-    #def quote_name(self, name):
+    # def quote_name(self, name):
     #    if name.startswith('"') and name.endswith('"'):
     #        return name # Quoting once is enough.
     #    return '"%s"' % name
@@ -66,7 +67,7 @@ class Cursor():
     # Capture and decode LIBRE HTTP 400 errors
 
     def __init__(self, host, name, port, user, password):
-        self.url = '%(schema)s%(host)s:%(port)d/api/sources/%(name)s/data' % {
+        self.url = '%(schema)s%(host)s:%(port)d/api/v1/%(name)s/data' % {
             'schema': 'http://',
             'host': host,
             'port': port or 80,
@@ -76,7 +77,7 @@ class Cursor():
         self.password = password
 
     def execute(self, query, params=()):
-        #TODO: In case we support kwargs bases query and params
+        # TODO: In case we support kwargs bases query and params
         # query_string = '&'.join(['%s=%s' % (filter, value) for filter, value in query.items()])
 
         query_string = query % params
