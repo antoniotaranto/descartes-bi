@@ -1,21 +1,21 @@
-from __future__ import absolute_import
+from __future__ import unicode_literals
 
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
-from reports.models import Report
-
 from .literals import DEFAULT_ELEMENT_HEIGHT
+from .managers import DashboardElementManager
+
+from widgets.models import WidgetBase
 
 
+@python_2_unicode_compatible
 class Dashboard(models.Model):
-    label = models.CharField(max_length=64, verbose_name=_(u'label'))
+    label = models.CharField(max_length=96, verbose_name=_('Label'))
 
-    def __unicode__(self):
+    def __str__(self):
         return self.label
-
-    def active_elements(self):
-        return self.elements.filter(enabled=True)
 
     def get_element_rows(self):
         rows = []
@@ -36,24 +36,20 @@ class Dashboard(models.Model):
         return rows
 
     class Meta:
-        verbose_name = _('dashboard')
-        verbose_name_plural = _('dashboards')
+        verbose_name = _('Dashboard')
+        verbose_name_plural = _('Dashboards')
 
 
 class DashboardElement(models.Model):
-    dashboard = models.ForeignKey(Dashboard, verbose_name=_(u'dashboard'), related_name='elements')
-    enabled = models.BooleanField(default=True, verbose_name=_('enabled'))
-    span = models.PositiveIntegerField(verbose_name=_(u'span'), help_text=_('The amount of columns in a 12 columns layout that this element should occupy.'))
-    height = models.PositiveIntegerField(verbose_name=_(u'height'), default=DEFAULT_ELEMENT_HEIGHT)
-    report = models.ForeignKey(Report, verbose_name=_(u'report'), blank=True, null=True)
-    values = models.TextField(blank=True)
+    dashboard = models.ForeignKey(Dashboard, verbose_name=_('Dashboard'), related_name='elements')
+    enabled = models.BooleanField(default=True, verbose_name=_('Enabled'))
+    span = models.PositiveIntegerField(help_text=_('The amount of columns in a 12 columns layout that this element should occupy.'), verbose_name=_('Span'))
+    height = models.PositiveIntegerField(default=DEFAULT_ELEMENT_HEIGHT, verbose_name=_('Height'))
+    order = models.PositiveIntegerField(blank=True, null=True, default=0, verbose_name=_('Order'))
+    widget = models.ForeignKey(WidgetBase, verbose_name=_('Widget'))
 
-    @property
-    def load_url(self):
-        return self.report.get_absolute_url()
-
-    def __unicode__(self):
-        return unicode(self.report)
+    objects = DashboardElementManager()
 
     class Meta:
-        verbose_name = _('dashboard element')
+        verbose_name = _('Dashboard element')
+        verbose_name_plural = _('Dashboard elements')

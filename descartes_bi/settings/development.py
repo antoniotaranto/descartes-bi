@@ -33,3 +33,38 @@ except ImportError:
 TEMPLATE_CONTEXT_PROCESSORS += ('django.core.context_processors.debug',)
 
 WSGI_AUTO_RELOAD = True
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(name)s %(process)d %(thread)d %(message)s'
+        },
+        'intermediate': {
+            'format': '%(name)s <%(process)d> [%(levelname)s] "%(funcName)s() %(message)s"'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'console':{
+            'level':'DEBUG',
+            'class':'logging.StreamHandler',
+            'formatter': 'intermediate'
+        }
+    },
+    'loggers': {
+        'libre_driver': {
+            'handlers':['console'],
+            'propagate': True,
+            'level':'DEBUG',
+        },
+        'reports': {
+            'handlers':['console'],
+            'propagate': True,
+            'level':'DEBUG',
+        },
+    }
+}

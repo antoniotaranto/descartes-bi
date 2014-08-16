@@ -35,7 +35,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
-    'grappelli',
+    'suit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,18 +45,13 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     # 3rd party
     'compressor',
-    'mptt',
     'south',
     # Descates BI
     'common',
-    'web_theme',
-    'namespaces',
-    'main',
-    'db_drivers',
-    'charts',
-    'reports',
+    'core',
+    'datasources',
     'dashboards',
-    'libre_driver',
+    'widgets',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -98,7 +93,7 @@ USE_TZ = True
 
 # Custom settings section
 
-from django.core.urlresolvers import reverse_lazy
+from django.utils.translation import ugettext_lazy as _
 
 PROJECT_NAME = 'descartes'
 PROJECT_TITLE = 'Descartes BI'
@@ -143,12 +138,26 @@ STATICFILES_FINDERS = (
 )
 
 # ===== Configuration options ===============
-# --------- Grappelli ----------------
-GRAPPELLI_ADMIN_TITLE = PROJECT_TITLE
+
 # --------- Django -------------------
-LOGIN_URL = reverse_lazy('login_view')
-LOGIN_REDIRECT_URL = reverse_lazy('home_view')
+LOGIN_URL = 'common:login_view'
+LOGIN_REDIRECT_URL = 'common:home_view'
+
 # ---------- CSS compress ------------
 COMPRESS_PARSER = 'compressor.parser.HtmlParser'
 COMPRESS_CSS_FILTERS = ['compressor.filters.css_default.CssAbsoluteFilter', 'compressor.filters.cssmin.CSSMinFilter']
 COMPRESS_ENABLED = False
+
+# Django SUIT
+
+SUIT_CONFIG = {
+    'ADMIN_NAME': 'Intrinsecus',
+    'MENU_OPEN_FIRST_CHILD': True,
+    'MENU': (
+        {'label': _('Auth'), 'icon': 'icon-user', 'app': 'auth'},
+        {'label': _('Datasources'), 'icon': 'icon-file', 'app': 'datasources'},
+        {'label': _('Dashboards'), 'icon': 'icon-cog', 'app': 'dashboards'},
+        {'label': _('Widgets'), 'icon': 'icon-picture', 'app': 'widgets'},
+    ),
+}
+

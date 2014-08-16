@@ -2,11 +2,11 @@ cssmin==0.2.0
 
 Django==1.6.5
 django-compressor==1.4
-django-grappelli==2.5.3
-django-mptt==0.6.1
+django-model-utils==2.2
+django-suit==0.2.9
+
+furl==0.3.95
 
 requests==2.3.0
 
 South==1.0
-
-wsgiref==0.1.2

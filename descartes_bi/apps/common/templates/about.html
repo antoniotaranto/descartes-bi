@@ -8,11 +8,11 @@
 {% block title %} :: {% trans 'About this program' %}{% endblock %}
 {% block banner %}{% trans 'About this program' %}{% endblock %}
 
-{% block base_content %}
+{% block content %}
     <div class="row-fluid">
         <div class="span12 pagination-centered">
 
-        <img class="aboutLogo" src="{% static 'images/big_logo.png' %}" alt="{% trans 'About logo' %}" />
+        <img class="aboutLogo" src="{% static 'core/images/big_logo.png' %}" alt="{% trans 'About logo' %}" />
         <h1><strong>{% project_name %}</strong></h1>
         <h2><strong>{% trans 'A Web based business intelligence software' %}</strong></h2>
         <a style="color: blue;" href="http://github.com/rosarior/descartes-bi">{% trans 'http://github.com/rosarior/descartes-bi' %}</a><br />
@@ -21,7 +21,7 @@
         {% trans 'Released under the Apache 2.0 License' %}<br />
         </div>
     </div>
-{% endblock base_content %}
+{% endblock content %}
 
 
 
