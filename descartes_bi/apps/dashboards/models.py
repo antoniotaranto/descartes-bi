@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
@@ -17,11 +18,14 @@ class Dashboard(models.Model):
     def __str__(self):
         return self.label
 
+    def get_absolute_url(self):
+        return reverse('dashboards:dashboard_view', args=[str(self.pk)])
+
     def get_element_rows(self):
         rows = []
         row = []
         spans = 0
-        for element in self.active_elements():
+        for element in self.elements.enabled():
             spans += element.span
             if spans > 12:
                 rows.append(row)
@@ -40,6 +44,7 @@ class Dashboard(models.Model):
         verbose_name_plural = _('Dashboards')
 
 
+@python_2_unicode_compatible
 class DashboardElement(models.Model):
     dashboard = models.ForeignKey(Dashboard, verbose_name=_('Dashboard'), related_name='elements')
     enabled = models.BooleanField(default=True, verbose_name=_('Enabled'))
@@ -49,6 +54,9 @@ class DashboardElement(models.Model):
     widget = models.ForeignKey(WidgetBase, verbose_name=_('Widget'))
 
     objects = DashboardElementManager()
+
+    def __str__(self):
+        return self.widget.label
 
     class Meta:
         verbose_name = _('Dashboard element')

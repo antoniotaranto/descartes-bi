@@ -23,7 +23,7 @@ class WidgetBase(models.Model):
     def fetch_data(self):
         return self.datasource.get()
 
-    def render(self, request):
+    def get_context(self):
         raise NotImplemented
 
     class Meta:
@@ -31,28 +31,29 @@ class WidgetBase(models.Model):
 
 
 class WebsiteWidget(WidgetBase):
+    template_name = 'widgets/website/base.html'
     widget_type = _('Website')
 
-    def render(self, request, response):
-        context = {
-            'widget': self,
-            'content': self.fetch_data().content.encode('base64'),
-        }
+    load_content = models.BooleanField(default=False, verbose_name=_('Load content'), help_text=_('The widget will load the content of the website as pass it as a base64 encoded string to the iframe, relative asset path will not work.'))
 
-        return render_to_response('widgets/website/base.html', context,
-            context_instance=RequestContext(request))
+    def get_context(self):
+        context = {
+            'content': self.fetch_data().content.encode('base64'),
+            'url': self.datasource.get_full_url(),
+            'load_content': self.load_content,
+        }
+        return context
 
 
 class MessageWidget(WidgetBase):
+    template_name = 'widgets/message/base.html'
     widget_type = _('Message')
 
     message = models.TextField(verbose_name=_('Message'))
 
-    def render(self, request, response):
+    def get_context(self):
         context = {
-            'widget': self,
-            'content': self.message,
+            'message': self.message,
         }
+        return context
 
-        return render_to_response('widgets/message/base.html', context,
-            context_instance=RequestContext(request))

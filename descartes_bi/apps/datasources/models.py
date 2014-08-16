@@ -34,10 +34,10 @@ class Datasource(models.Model):
         return requests.get(self.get_full_url())
 
     def get_full_url(self):
-        url = furl(self.host.netloc)
-        url.path = self.path
-        url.path.normalize()
-        return url
+        f = furl(self.host.netloc)
+        f.path = self.path
+        f.path.normalize()
+        return f.url
 
     class Meta:
         verbose_name = _('Datasource')

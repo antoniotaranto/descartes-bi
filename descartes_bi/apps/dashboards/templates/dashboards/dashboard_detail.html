@@ -1,0 +1,42 @@
+{% extends 'core/base.html' %}
+
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+    <div id="dashboard">
+        {% for row in dashboard.get_element_rows %}
+            <div class="row-fluid">
+                {% for element in row %}
+                    <div class="span{{ element.span }}">
+                        <div class="widget">
+                            <div class="widget-header">
+                                <i class="icon-bookmark"></i>
+                                <h3>{{ element }}</h3>
+                            </div>
+                            <div class="widget-content" style="height: {{ element.height }}px;">
+                                <div id="widget{{ element.pk }}">
+                                    <div class="row-fluid">
+                                        <div class="span12 pagination-centered">
+                                            <img src="{% static 'core/images/spinner.gif' %}" alt="{% trans 'loading' %}" width="40" height="40" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock content %}
+
+{% block javascript %}
+    <script type="text/javascript">
+         $(document).ready(function() {
+            {% for element in dashboard.elements.enabled %}
+                $("#widget{{ element.pk }}").load("{% url 'widgets:widget_render' element.widget.pk %}");
+            {% endfor %}
+         });
+    </script>
+{% endblock javascript %}

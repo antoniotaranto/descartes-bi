@@ -6,9 +6,10 @@ admin.autodiscover()
 
 handler500 = 'common.views.error500'
 urlpatterns = patterns('',
-    (r'^', include('dashboards.urls', namespace='dashboards')),
+    (r'^', include('common.urls', namespace='common')),
     (r'^admin/', include(admin.site.urls)),
-    (r'^common/', include('common.urls', namespace='common')),
+    (r'^dashboards/', include('dashboards.urls', namespace='dashboards')),
+    (r'^widgets/', include('widgets.urls', namespace='widgets')),
 )
 
 if settings.DEBUG:

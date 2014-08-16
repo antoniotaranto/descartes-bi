@@ -1,17 +1,19 @@
 import logging
 import os
-import re
 
 from django import http
 from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
-from django.template import loader, RequestContext
+from django.template import loader
+from django.views.generic import TemplateView
+
+from dashboards.models import Dashboard
 
 logger = logging.getLogger(__name__)
 
 
-def error500(request, template_name='500.html'):
+def error500(request, template_name='core/500.html'):
     # TODO: if user is admin include debug info
     t = loader.get_template(template_name)
 
@@ -26,19 +28,14 @@ def set_language(request):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
-def home(request):
-    return render_to_response('home.html', {},
-        context_instance=RequestContext(request))
+class HomeView(TemplateView):
+    template_name = 'core/home.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(HomeView, self).get_context_data(**kwargs)
+        context['dashboards'] = Dashboard.objects.all()
+        return context
 
 
-def about(request):
-    return render_to_response('about.html', {},
-        context_instance=RequestContext(request))
-
-
-def get_project_root():
-    """
-    Get the project root directory
-    """
-    settings_mod = __import__(settings.SETTINGS_MODULE, {}, {}, [''])
-    return os.path.dirname(os.path.abspath(settings_mod.__file__))
+class AboutView(TemplateView):
+    template_name = 'core/about.html'
