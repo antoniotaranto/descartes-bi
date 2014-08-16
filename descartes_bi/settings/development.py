@@ -56,12 +56,12 @@ LOGGING = {
         }
     },
     'loggers': {
-        'libre_driver': {
+        'dashboards': {
             'handlers':['console'],
             'propagate': True,
             'level':'DEBUG',
         },
-        'reports': {
+        'widgets': {
             'handlers':['console'],
             'propagate': True,
             'level':'DEBUG',

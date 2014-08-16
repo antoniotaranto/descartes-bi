@@ -23,6 +23,8 @@ class WidgetRenderView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(WidgetRenderView, self).get_context_data(**kwargs)
+        context['element_pk'] = self.request.GET.get('element_pk', None)
+
         try:
             context.update(self.get_object().get_context())
         except Exception as exception:

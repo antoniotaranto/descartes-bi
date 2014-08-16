@@ -12,7 +12,7 @@ from datasources.models import Datasource
 @python_2_unicode_compatible
 class WidgetBase(models.Model):
     label = models.CharField(max_length=128, verbose_name=_('Label'))
-    datasource = models.OneToOneField(Datasource, null=True, blank=True, verbose_name=_('Datasource'))
+    datasource = models.ForeignKey(Datasource, null=True, blank=True, verbose_name=_('Datasource'))
 
     objects = InheritanceManager()
 
@@ -57,3 +57,42 @@ class MessageWidget(WidgetBase):
         }
         return context
 
+
+class JavascriptWidget(WidgetBase):
+    javascript = models.TextField(blank=True, verbose_name=_('Javascript'))
+
+    class Meta:
+        abstract = True
+
+
+class NovusLineChartWidget(JavascriptWidget):
+    template_name = 'widgets/novus/linechart.html'
+    widget_type = _('Novus line chart')
+
+    def get_context(self):
+        context = {
+            'data': self.fetch_data().json(),
+            'javascript': self.javascript,
+        }
+        return context
+
+
+class JustgageWidget(JavascriptWidget):
+    template_name = 'widgets/justgage/base.html'
+    widget_type = _('Justgage gauge widget')
+
+    title = models.CharField(verbose_name=_('Title'), max_length=48)
+    minimum = models.IntegerField(verbose_name=_('Minimum'), default=0)
+    maximum = models.IntegerField(verbose_name=_('Maximum'), default=100)
+    legend = models.CharField(verbose_name=_('Legend'), max_length=48)
+
+    def get_context(self):
+        context = {
+            #'data': self.fetch_data().json(),
+            'javascript': self.javascript,
+            'legend': self.legend,
+            'maximum': self.maximum,
+            'minimum': self.minimum,
+            'title': self.title,
+        }
+        return context

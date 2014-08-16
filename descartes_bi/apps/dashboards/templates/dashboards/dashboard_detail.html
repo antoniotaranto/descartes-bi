@@ -35,7 +35,7 @@
     <script type="text/javascript">
          $(document).ready(function() {
             {% for element in dashboard.elements.enabled %}
-                $("#widget{{ element.pk }}").load("{% url 'widgets:widget_render' element.widget.pk %}");
+                $("#widget{{ element.pk }}").load("{% url 'widgets:widget_render' element.widget.pk %}?element_pk={{ element.pk }}");
             {% endfor %}
          });
     </script>

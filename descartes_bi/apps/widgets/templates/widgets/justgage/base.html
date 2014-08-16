@@ -1,0 +1,17 @@
+{% load static %}
+
+<script src="{% static 'widgets/packages/raphael-min.js' %}"></script>
+<script src="{% static 'widgets/packages/justgage-master/justgage.js' %}"></script>
+
+<div id="gauge{{ element_pk }}" style="width: 100%; height: 100%;"></div>
+
+<script>
+    var g = new JustGage({
+        id: "gauge{{ element_pk }}",
+        value: 67,
+        min: {{ minimum }},
+        max: {{ maximum }},
+        title: '{{ title }}',
+        label: '{{ legend }}'
+    });
+</script>

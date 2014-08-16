@@ -7,6 +7,8 @@ from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
+SMART_MODE = False
+
 
 @python_2_unicode_compatible
 class Host(models.Model):
@@ -34,10 +36,13 @@ class Datasource(models.Model):
         return requests.get(self.get_full_url())
 
     def get_full_url(self):
-        f = furl(self.host.netloc)
-        f.path = self.path
-        f.path.normalize()
-        return f.url
+        if SMART_MODE:
+            f = furl(self.host.netloc)
+            f.path = self.path
+            f.path.normalize()
+            return f.url
+        else:
+            return '{}{}'.format(self.host.netloc, self.path)
 
     class Meta:
         verbose_name = _('Datasource')
