@@ -6,7 +6,7 @@
 
 {% block javascript %}
     <script>
-        $(document).ready(function(){
+        function initialize{{ element_pk }}(){
             var canvas = $("#ChartJS{{ element_pk }}");
             var context = canvas.get(0).getContext('2d');
             var container = canvas.parent();
@@ -32,7 +32,7 @@
                 $.each(data.datasets, function(index, value) {
                         colorValue = colorValue - 50;
                     $.extend(true, data.datasets[index], {
-                        fillColor: 'rgba(' + colorValue + ',' + colorValue + ',' + colorValue + ',' + '0.8)',
+                        fillColor: 'rgba(' + colorValue + ',' + colorValue + ',' + colorValue + ',' + '0.1)',
                         strokeColor: 'rgba(' + colorValue + ',' + colorValue + ',' + colorValue + ',' + '1)',
                         pointColor: 'rgba(' + colorValue + ',' + colorValue + ',' + colorValue + ',' + '1)',
                         pointStrokeColor: '#fff',
@@ -47,6 +47,8 @@
                 });
             }
             resizeCanvas();
-        });
+        }
+
+        initialize{{ element_pk }}();
     </script>
 {% endblock javascript %}

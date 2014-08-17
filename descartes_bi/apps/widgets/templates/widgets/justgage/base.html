@@ -6,7 +6,7 @@
 <div id="gauge{{ element_pk }}" style="width: 100%; height: 100%;"></div>
 
 <script>
-    $(document).ready(function(){
+    function initialize{{ element_pk }}(){
         var data{{ element_pk }} = JSON.parse("{{ original_data|escapejs }}");
 
         {% if javascript_enabled %}
@@ -25,5 +25,7 @@
             label: '{{ legend }}',
             relativeGaugeSize: true,
         });
-    });
+    }
+
+    initialize{{ element_pk }}();
 </script>

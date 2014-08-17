@@ -6,7 +6,7 @@
 
 {% block javascript %}
     <script>
-        $(document).ready(function(){
+        function initialize{{ element_pk }}(){
             var canvas = $("#ChartJS{{ element_pk }}");
             var context = canvas.get(0).getContext('2d');
             var container = canvas.parent();
@@ -35,6 +35,8 @@
                 });
             }
             resizeCanvas();
-        });
+        }
+
+        initialize{{ element_pk }}();
     </script>
 {% endblock javascript %}
