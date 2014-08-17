@@ -1,4 +1,5 @@
 import logging
+import traceback
 
 from django.views.generic import DetailView
 
@@ -28,6 +29,6 @@ class WidgetRenderView(DetailView):
         try:
             context.update(self.get_object().get_context())
         except Exception as exception:
-            context['exception'] = self.exception = exception
+            context['exception'] = self.exception = traceback.format_exc()
 
         return context

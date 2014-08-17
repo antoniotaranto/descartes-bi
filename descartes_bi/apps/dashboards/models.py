@@ -61,3 +61,4 @@ class DashboardElement(models.Model):
     class Meta:
         verbose_name = _('Dashboard element')
         verbose_name_plural = _('Dashboard elements')
+        ordering = ('order',)

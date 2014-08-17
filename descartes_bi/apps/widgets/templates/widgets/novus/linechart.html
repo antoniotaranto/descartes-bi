@@ -6,9 +6,7 @@
 
 {% block javascript %}
     <script>
-        {% if javascript %}
-            {{ javascript|safe }}
-        {% endif %}
+        {{ javascript|safe }}
 
         // Get data
         (function() {

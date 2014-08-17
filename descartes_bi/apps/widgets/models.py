@@ -1,5 +1,7 @@
 from __future__ import unicode_literals
 
+import json
+
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
@@ -14,17 +16,38 @@ class WidgetBase(models.Model):
     label = models.CharField(max_length=128, verbose_name=_('Label'))
     datasource = models.ForeignKey(Datasource, null=True, blank=True, verbose_name=_('Datasource'))
 
+    python_code = models.TextField(blank=True, verbose_name=_('Python'), help_text=_('Python code block executed after fetching the data from the datasource. An "original_data" variable is passed to the script and a "python_data" variable is expected. This code is executed at the server.'))
+    python_enabled = models.BooleanField(default=False, verbose_name=_('Python enabled'))
+    javascript_code = models.TextField(blank=True, verbose_name=_('Javascript'), help_text=_('Javascript code block executed after the Python code executes. An "original_data" variable is passed to the script. This code is executed at the browser.'))
+    javascript_enabled = models.BooleanField(default=True, verbose_name=_('Javascript enabled'))
+
     objects = InheritanceManager()
 
     def __str__(self):
         subclass = WidgetBase.objects.get_subclass(pk=self.pk)
         return '%s (%s)' % (subclass.label, subclass.widget_type)
 
-    def fetch_data(self):
-        return self.datasource.get()
+    def get_data(self):
+        if self.datasource:
+            original_data = self.datasource.get()
+        else:
+            original_data = None
+
+        if self.python_enabled:
+            result = {}
+            exec(self.python_code, {'original_data': original_data}, result)
+            original_data = result['python_data']
+
+        return original_data
 
     def get_context(self):
-        raise NotImplemented
+        context = {
+            'original_data': self.get_data(),
+            'original_data_json': json.dumps(self.get_data()),
+            'javascript_code': self.javascript_code,
+            'javascript_enabled': self.javascript_enabled,
+        }
+        return context
 
     class Meta:
         ordering = ('label',)
@@ -38,7 +61,9 @@ class WebsiteWidget(WidgetBase):
 
     def get_context(self):
         context = {
-            'content': self.fetch_data().content.encode('base64'),
+            'javascript_code': self.javascript_code,
+            'javascript_enabled': self.javascript_enabled,
+            'content': self.datasource.get().content.encode('base64'),
             'url': self.datasource.get_full_url(),
             'load_content': self.load_content,
         }
@@ -58,26 +83,12 @@ class MessageWidget(WidgetBase):
         return context
 
 
-class JavascriptWidget(WidgetBase):
-    javascript = models.TextField(blank=True, verbose_name=_('Javascript'))
-
-    class Meta:
-        abstract = True
-
-
-class NovusLineChartWidget(JavascriptWidget):
+class NovusLineChartWidget(WidgetBase):
     template_name = 'widgets/novus/linechart.html'
     widget_type = _('Novus line chart')
 
-    def get_context(self):
-        context = {
-            'data': self.fetch_data().json(),
-            'javascript': self.javascript,
-        }
-        return context
 
-
-class JustgageWidget(JavascriptWidget):
+class JustgageWidget(WidgetBase):
     template_name = 'widgets/justgage/base.html'
     widget_type = _('Justgage gauge widget')
 
@@ -87,12 +98,109 @@ class JustgageWidget(JavascriptWidget):
     legend = models.CharField(verbose_name=_('Legend'), max_length=48)
 
     def get_context(self):
-        context = {
-            #'data': self.fetch_data().json(),
-            'javascript': self.javascript,
+        context = super(JustgageWidget, self).get_context()
+        context.update({
             'legend': self.legend,
             'maximum': self.maximum,
             'minimum': self.minimum,
             'title': self.title,
-        }
+        })
         return context
+
+
+class ChartJSWidget(WidgetBase):
+    labels_element = models.CharField(blank=True, max_length=64, verbose_name=_('Labels element'))
+    data_element = models.CharField(blank=True, max_length=64, verbose_name=_('Data element'))
+
+    def get_context(self):
+        context = super(ChartJSWidget, self).get_context()
+
+        result = {
+            'labels': [result[self.labels_element] for result in context['original_data']],
+            'datasets': [
+                {
+                    'label': "My First dataset",
+                    'fillColor': "rgba(220,220,220,0.2)",
+                    'strokeColor': "rgba(220,220,220,1)",
+                    'pointColor': "rgba(220,220,220,1)",
+                    'pointStrokeColor': "#fff",
+                    'pointHighlightFill': "#fff",
+                    'pointHighlightStroke': "rgba(220,220,220,1)",
+                    'data': [result[self.data_element] for result in context['original_data']],
+               }
+           ]
+        }
+
+        context.update({
+            'original_data': json.dumps(result),
+        })
+        return context
+
+    class Meta:
+        abstract = True
+
+
+class ChartJSLineWidget(ChartJSWidget):
+    template_name = 'widgets/chartjs/line.html'
+    widget_type = _('ChartJS line chart widget')
+
+    default_javascript = """
+        var data = {
+            labels: ["January", "February", "March", "April", "May", "June", "July"],
+            datasets: [
+                {
+                    label: "My First dataset",
+                    fillColor: "rgba(220,220,220,0.2)",
+                    strokeColor: "rgba(220,220,220,1)",
+                    pointColor: "rgba(220,220,220,1)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: [65, 59, 80, 81, 56, 55, 40]
+                },
+                {
+                    label: "My Second dataset",
+                    fillColor: "rgba(151,187,205,0.2)",
+                    strokeColor: "rgba(151,187,205,1)",
+                    pointColor: "rgba(151,187,205,1)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(151,187,205,1)",
+                    data: [28, 48, 40, 19, 86, 27, 90]
+                }
+            ]
+        };
+    """
+
+ChartJSLineWidget._meta.get_field('javascript_code').default = ChartJSLineWidget.default_javascript
+
+
+class ChartJSBarWidget(ChartJSWidget):
+    template_name = 'widgets/chartjs/bar.html'
+    widget_type = _('ChartJS bar chart widget')
+
+    default_javascript = """
+        var data = {
+            labels: ["January", "February", "March", "April", "May", "June", "July"],
+            datasets: [
+                {
+                    label: "My First dataset",
+                    fillColor: "rgba(220,220,220,0.5)",
+                    strokeColor: "rgba(220,220,220,0.8)",
+                    highlightFill: "rgba(220,220,220,0.75)",
+                    highlightStroke: "rgba(220,220,220,1)",
+                    data: [65, 59, 80, 81, 56, 55, 40]
+                },
+                {
+                    label: "My Second dataset",
+                    fillColor: "rgba(151,187,205,0.5)",
+                    strokeColor: "rgba(151,187,205,0.8)",
+                    highlightFill: "rgba(151,187,205,0.75)",
+                    highlightStroke: "rgba(151,187,205,1)",
+                    data: [28, 48, 40, 19, 86, 27, 90]
+                }
+            ]
+        };
+    """
+
+ChartJSBarWidget._meta.get_field('javascript_code').default = ChartJSBarWidget.default_javascript
