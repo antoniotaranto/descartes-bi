@@ -4,8 +4,9 @@ from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
 from .models import (ChartJSBarWidget, ChartJSDoughnutWidget, ChartJSLineWidget,
-                     ChartJSPieWidget, ChartJSRadarWidget, JustgageWidget,
-                     MessageWidget, NovusLineChartWidget, WebsiteWidget)
+                     ChartJSPieWidget, ChartJSRadarWidget, ExpressionWidget,
+                     JustgageWidget, MessageWidget, NovusLineChartWidget,
+                     WebsiteWidget)
 
 
 class WidgetdAdmin(admin.ModelAdmin):
@@ -18,6 +19,7 @@ admin.site.register(ChartJSDoughnutWidget, WidgetdAdmin)
 admin.site.register(ChartJSLineWidget, WidgetdAdmin)
 admin.site.register(ChartJSPieWidget, WidgetdAdmin)
 admin.site.register(ChartJSRadarWidget, WidgetdAdmin)
+admin.site.register(ExpressionWidget, WidgetdAdmin)
 admin.site.register(JustgageWidget, WidgetdAdmin)
 admin.site.register(MessageWidget, WidgetdAdmin)
 admin.site.register(NovusLineChartWidget, WidgetdAdmin)

@@ -53,6 +53,11 @@ class WidgetBase(models.Model):
         ordering = ('label',)
 
 
+class ExpressionWidget(WidgetBase):
+    template_name = 'widgets/expression/base.html'
+    widget_type = _('Expression')
+
+
 class WebsiteWidget(WidgetBase):
     template_name = 'widgets/website/base.html'
     widget_type = _('Website')
