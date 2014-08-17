@@ -1,38 +1,28 @@
 {% extends 'core/base.html' %}
-
 {% load i18n %}
 
 {% block content %}
-    <div class="row">
-        <div class="span12">
-            <div class="widget">
-                <div class="widget-header"> <i class="{{ node.icon }}"></i>
-                    <h3>{{ dashboard }}</h3>
-                </div>
-                <div class="widget-content">
-                    <div class="shortcuts">
-                        {% for element in dashboard.get_children %}
-                            <a href="{{ child_node.get_absolute_url }}" class="shortcut">
-                                <i class="shortcut-icon {{ child_node.icon }}"></i>
-                                <span class="shortcut-label">{{ child_node.label }}</span>
-                            </a>
-                        {% endfor %}
-                    </div>
-                </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <h4 class="text-center">{% trans 'Dashboards' %}</h4>
             </div>
+        </div>
+
+        <div class="row">
+            {% for dashboard in dashboards %}
+                <div class="col-md-4">
+                    <p class="text-center">
+                    <a class="btn btn-lg btn-default" href="{{ dashboard.get_absolute_url }}" style="width: 100%; min-height: 200px; white-space:normal !important;
+    max-width:200px; background: rgba(0, 0, 0, 0); color: white;">
+                         {{ dashboard.icon_code|safe }}<br> {{ dashboard }}<br><small>{{ dashboard.description }}</small></a>
+                     </p>
+                </div>
+                {% if forloop.counter|divisibleby:3 %}
+                    </div>
+                    <div class="row">
+                {% endif %}
+            {% endfor %}
         </div>
     </div>
 {% endblock content %}
-
-{% block menu %}
-    {% for menu in menus %}
-        <li>
-            <a href="#">{{ menu }}</a>
-            <ul>
-                {% for report in menu.reports.all %}
-                    <li><a class="report-button" href="{{ report.id }}">{{ report }}</a></li>
-                {% endfor %}
-            </ul>
-        </li>
-    {% endfor %}
-{% endblock menu %}

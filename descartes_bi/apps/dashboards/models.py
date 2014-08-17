@@ -14,6 +14,8 @@ from widgets.models import WidgetBase
 @python_2_unicode_compatible
 class Dashboard(models.Model):
     label = models.CharField(max_length=96, verbose_name=_('Label'))
+    icon_code = models.TextField(blank=True, default='<i class="fa fa-tachometer"></i>', verbose_name=_('Icon code'))
+    description = models.TextField(blank=True, verbose_name=_('Description'))
 
     def __str__(self):
         return self.label

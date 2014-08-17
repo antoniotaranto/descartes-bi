@@ -27,10 +27,8 @@
 
             <style>
                 html {
-                    {#background: url({% static 'core/images/backgrounds/1214960_39648354.jpg' %}) no-repeat center center fixed;#}
-                    {#background: url("{% static 'core/images/backgrounds/blue-1/Blue Blurry Background.jpg' %}") no-repeat center center fixed;#}
-                    {#background: url("{% static 'core/images/backgrounds/creative/Creative graphic background vector-01.jpg' %}") no-repeat center center fixed;#}
-                    background: url("{% static 'core/images/backgrounds/minimalistic_violet_purple_blu_1280x800_artwallpaperhi.com.jpg' %}") no-repeat center center fixed;
+                    {#background: url("{% static 'core/images/backgrounds/creative/creative.jpg' %}") no-repeat center center fixed;#}
+                    background: url("{% static 'core/images/backgrounds/minimalistic_violet_purple_blue.jpg' %}") no-repeat center center fixed;
 
                     -webkit-background-size: cover;
                     -moz-background-size: cover;
@@ -92,7 +90,6 @@
                 .dropdown:hover .dropdown-menu {
                     display: block;
                 }
-
             </style>
 
             {% block stylesheets %}{% endblock stylesheets %}
@@ -117,7 +114,7 @@
                 <div class="collapse navbar-collapse" id='main-navigation'>
                     <ul class="nav navbar-nav">
                         <li><a href="{% url 'common:home_view' %}">{% trans 'Home' %}</a></li>
-                        <li><a href="#">{% trans 'Dashboards' %}</a></li>
+                        <li><a href="{% url 'dashboards:dashboard_list' %}">{% trans 'Dashboards' %}</a></li>
                         <li><a href="{% url 'common:about_view' %}">{% trans 'About' %}</a></li>
                     </ul>
 
@@ -172,8 +169,6 @@
         {% compress js %}
             <script src="{% static 'core/packages/jquery-2.1.1.min.js' %}"></script>
             <script src="{% static 'core/packages/bootstrap-3.2.0-dist/js/bootstrap.min.js' %}"></script>
-
-
             {% block javascript %}{% endblock javascript %}
         {% endcompress %}
     </body>
