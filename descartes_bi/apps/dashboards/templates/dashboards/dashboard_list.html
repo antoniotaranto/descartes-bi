@@ -7,9 +7,8 @@
             {% for dashboard in dashboards %}
                 <div class="col-md-4">
                     <p class="text-center">
-                    <a class="btn btn-lg btn-default" href="{{ dashboard.get_absolute_url }}" style="width: 100%; min-height: 200px; white-space:normal !important;
-    max-width:200px; background: rgba(0, 0, 0, 0); color: white;">
-                         {{ dashboard.icon_code|safe }}<br> {{ dashboard }}<br><small>{{ dashboard.description }}</small></a>
+                    <a class="btn btn-lg btn-default btn-square" href="{{ dashboard.get_absolute_url }}">
+                         {{ dashboard.icon_code|safe }}<br><br> {{ dashboard }}<br><br><small>{{ dashboard.description }}</small></a>
                      </p>
                 </div>
                 {% if forloop.counter|divisibleby:3 %}

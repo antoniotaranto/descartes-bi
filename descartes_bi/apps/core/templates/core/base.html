@@ -47,6 +47,43 @@
                 .navbar {
                     background: rgba(0, 0, 0, 0.1);
                     margin-bottom: 10px;
+                    color: white;
+                }
+
+                .navbar-inverse .navbar-nav>li>a {
+                    color: #ccc;
+                }
+
+                .navbar-inverse .navbar-brand {
+                    color: #ccc;
+                }
+
+                .navbar-nav>li>.dropdown-menu {
+                    background: rgba(0, 0, 0, 0.6);
+                    -moz-box-shadow: 0 0 8px black;
+                    -webkit-box-shadow: 0 0 8px black;
+                    box-shadow: 0 0 8px black;
+                }
+
+                .dropdown-menu>li>a {
+                    color: white;
+                }
+
+                a {
+                    color: white;
+                }
+
+                a:hover {
+                    color: yellow;
+                }
+
+                @media (min-width: 768px) {
+                    .navbar-nav{
+                        margin: 0 auto;
+                        display: table;
+                        table-layout: fixed;
+                        float: none;
+                    }
                 }
 
                 .widget {
@@ -68,33 +105,21 @@
                     padding-left: 5px;
                 }
 
-                .navbar {
+                .btn-square:hover {
+                    background: rgba(0, 0, 0, 0) !important;
+                    box-shadow: 0 0 8px black;
+                    -moz-box-shadow: 0 0 8px black;
+                    -webkit-box-shadow: 0 0 8px black;
                     color: white;
                 }
 
-                .navbar-inverse .navbar-nav>li>a {
-                    color: #ccc;
-                }
-
-                .navbar-inverse .navbar-brand {
-                    color: #ccc;
-                }
-
-                a {
-                    color: white;
-                }
-
-                a:hover {
-                    color: yellow;
-                }
-
-                @media (min-width: 768px) {
-                    .navbar-nav{
-                        margin: 0 auto;
-                        display: table;
-                        table-layout: fixed;
-                        float:none;
-                    }
+                .btn-square {
+                    background: rgba(0, 0, 0, 0); color: white;
+                    margin-top: 40px;
+                    max-width :200px;
+                    min-height: 200px;
+                    white-space: normal !important;
+                    width: 100%;
                 }
             </style>
 
