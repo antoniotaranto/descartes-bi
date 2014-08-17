@@ -17,6 +17,20 @@
                 {{ javascript_code|safe }}
             {% endif %}
 
+                colorValue = 250;
+
+            $.each(data.datasets, function(index, value) {
+                    colorValue = colorValue - 50;
+                $.extend(true, data.datasets[index], {
+                    fillColor: 'rgba(' + colorValue + ',' + colorValue + ',' + colorValue + ',' + '0.1)',
+                    strokeColor: 'rgba(' + colorValue + ',' + colorValue + ',' + colorValue + ',' + '1)',
+                    pointColor: 'rgba(' + colorValue + ',' + colorValue + ',' + colorValue + ',' + '1)',
+                    pointStrokeColor: '#fff',
+                    pointHighlightFill: '#fff',
+                    pointHighlightStroke: 'rgba(' + colorValue + ',' + colorValue + ',' + colorValue +','+'1)',
+                });
+            });
+
             $(window).resize(resizeCanvas);
 
             function resizeCanvas(){
@@ -37,3 +51,11 @@
         initialize{{ element_pk }}();
     </script>
 {% endblock javascript %}
+
+
+                    'fillColor': "rgba(220,220,220,0.2)",
+                    'strokeColor': "rgba(220,220,220,1)",
+                    'pointColor': "rgba(220,220,220,1)",
+                    'pointStrokeColor': "#fff",
+                    'pointHighlightFill': "#fff",
+                    'pointHighlightStroke': "rgba(220,220,220,1)",
