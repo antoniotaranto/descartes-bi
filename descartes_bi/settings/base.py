@@ -35,17 +35,21 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+    # 3rd party
     'suit',
+
+    # Django
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.humanize',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     # 3rd party
     'compressor',
     'south',
+
     # Descates BI
     'common',
     'core',
@@ -96,7 +100,7 @@ USE_TZ = True
 from django.utils.translation import ugettext_lazy as _
 
 PROJECT_NAME = 'descartes'
-PROJECT_TITLE = 'Descartes BI'
+PROJECT_TITLE = _('Descartes BI')
 
 ugettext = lambda s: s
 
@@ -151,13 +155,13 @@ COMPRESS_ENABLED = False
 # Django SUIT
 
 SUIT_CONFIG = {
-    'ADMIN_NAME': 'Intrinsecus',
+    'ADMIN_NAME': PROJECT_TITLE,
     'MENU_OPEN_FIRST_CHILD': True,
     'MENU': (
         {'label': _('Auth'), 'icon': 'icon-user', 'app': 'auth'},
         {'label': _('Datasources'), 'icon': 'icon-file', 'app': 'datasources'},
-        {'label': _('Dashboards'), 'icon': 'icon-cog', 'app': 'dashboards'},
-        {'label': _('Widgets'), 'icon': 'icon-picture', 'app': 'widgets'},
+        {'label': _('Dashboards'), 'icon': 'icon-picture', 'app': 'dashboards'},
+        {'label': _('Widgets'), 'icon': 'icon-cog', 'app': 'widgets'},
     ),
 }
 

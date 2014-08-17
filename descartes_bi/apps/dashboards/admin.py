@@ -1,15 +1,31 @@
+from __future__ import unicode_literals
+
 from django.contrib import admin
+from django.utils.translation import ugettext_lazy as _
+
+from suit.admin import SortableModelAdmin, SortableStackedInline
 
 from .models import Dashboard, DashboardElement
 
 
-class DashboardElementInline(admin.StackedInline):
+class DashboardElementInline(SortableStackedInline):
+    extra = 0
     model = DashboardElement
-    extra = 1
+    suit_classes = 'suit-tab suit-tab-elements'
+    sortable = 'order'
 
 
-class DashboardAdmin(admin.ModelAdmin):
+class DashboardAdmin(SortableModelAdmin):
     inlines = [DashboardElementInline]
+    list_display = ('label', 'description', 'full_screen', 'order')
+    sortable = 'order'
+    suit_form_tabs = (('configuration', _('Configuration')), ('elements', _('Elements')))
 
+    fieldsets = (
+        (_('Basic information'), {
+            'classes': ('suit-tab suit-tab-configuration',),
+            'fields': ('label', 'description', 'icon_code', 'full_screen')
+        }),
+    )
 
 admin.site.register(Dashboard, DashboardAdmin)
