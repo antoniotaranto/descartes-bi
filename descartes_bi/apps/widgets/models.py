@@ -31,7 +31,7 @@ class WidgetBase(models.Model):
         if self.datasource:
             original_data = self.datasource.get()
         else:
-            original_data = None
+            original_data = {}
 
         if self.python_enabled:
             result = {}
@@ -42,10 +42,10 @@ class WidgetBase(models.Model):
 
     def get_context(self):
         context = {
-            'original_data': self.get_data(),
-            'original_data_json': json.dumps(self.get_data()),
             'javascript_code': self.javascript_code,
             'javascript_enabled': self.javascript_enabled,
+            'original_data': self.get_data(),
+            'original_data_json': json.dumps(self.get_data()),
         }
         return context
 
@@ -61,11 +61,11 @@ class WebsiteWidget(WidgetBase):
 
     def get_context(self):
         context = {
+            'content': self.datasource.get().content.encode('base64'),
             'javascript_code': self.javascript_code,
             'javascript_enabled': self.javascript_enabled,
-            'content': self.datasource.get().content.encode('base64'),
-            'url': self.datasource.get_full_url(),
             'load_content': self.load_content,
+            'url': self.datasource.get_full_url(),
         }
         return context
 
@@ -92,10 +92,10 @@ class JustgageWidget(WidgetBase):
     template_name = 'widgets/justgage/base.html'
     widget_type = _('Justgage gauge widget')
 
-    title = models.CharField(verbose_name=_('Title'), max_length=48)
-    minimum = models.IntegerField(verbose_name=_('Minimum'), default=0)
-    maximum = models.IntegerField(verbose_name=_('Maximum'), default=100)
-    legend = models.CharField(verbose_name=_('Legend'), max_length=48)
+    title = models.CharField(blank=True, max_length=48, verbose_name=_('Title'))
+    minimum = models.IntegerField(default=0, verbose_name=_('Minimum'))
+    maximum = models.IntegerField(default=100, verbose_name=_('Maximum'))
+    legend = models.CharField(max_length=48, verbose_name=_('Legend'))
 
     def get_context(self):
         context = super(JustgageWidget, self).get_context()
@@ -115,25 +115,26 @@ class ChartJSWidget(WidgetBase):
     def get_context(self):
         context = super(ChartJSWidget, self).get_context()
 
-        result = {
-            'labels': [result[self.labels_element] for result in context['original_data']],
-            'datasets': [
-                {
-                    'label': "My First dataset",
-                    'fillColor': "rgba(220,220,220,0.2)",
-                    'strokeColor': "rgba(220,220,220,1)",
-                    'pointColor': "rgba(220,220,220,1)",
-                    'pointStrokeColor': "#fff",
-                    'pointHighlightFill': "#fff",
-                    'pointHighlightStroke': "rgba(220,220,220,1)",
-                    'data': [result[self.data_element] for result in context['original_data']],
-               }
-           ]
-        }
+        if self.datasource:
+            result = {
+                'labels': [result[self.labels_element] for result in context['original_data']],
+                'datasets': [
+                    {
+                        'label': "My First dataset",
+                        'fillColor': "rgba(220,220,220,0.2)",
+                        'strokeColor': "rgba(220,220,220,1)",
+                        'pointColor': "rgba(220,220,220,1)",
+                        'pointStrokeColor': "#fff",
+                        'pointHighlightFill': "#fff",
+                        'pointHighlightStroke': "rgba(220,220,220,1)",
+                        'data': [result[self.data_element] for result in context['original_data']],
+                   }
+               ]
+            }
 
-        context.update({
-            'original_data': json.dumps(result),
-        })
+            context.update({
+                'original_data': json.dumps(result),
+            })
         return context
 
     class Meta:
@@ -204,3 +205,38 @@ class ChartJSBarWidget(ChartJSWidget):
     """
 
 ChartJSBarWidget._meta.get_field('javascript_code').default = ChartJSBarWidget.default_javascript
+
+
+class ChartJSRadarWidget(ChartJSWidget):
+    template_name = 'widgets/chartjs/radar.html'
+    widget_type = _('ChartJS radar chart widget')
+
+    default_javascript = """
+        var data = {
+            labels: ["Eating", "Drinking", "Sleeping", "Designing", "Coding", "Cycling", "Running"],
+            datasets: [
+                {
+                    label: "My First dataset",
+                    fillColor: "rgba(220,220,220,0.2)",
+                    strokeColor: "rgba(220,220,220,1)",
+                    pointColor: "rgba(220,220,220,1)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: [65, 59, 90, 81, 56, 55, 40]
+                },
+                {
+                    label: "My Second dataset",
+                    fillColor: "rgba(151,187,205,0.2)",
+                    strokeColor: "rgba(151,187,205,1)",
+                    pointColor: "rgba(151,187,205,1)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(151,187,205,1)",
+                    data: [28, 48, 40, 19, 96, 27, 100]
+                }
+            ]
+        };
+    """
+
+ChartJSRadarWidget._meta.get_field('javascript_code').default = ChartJSRadarWidget.default_javascript

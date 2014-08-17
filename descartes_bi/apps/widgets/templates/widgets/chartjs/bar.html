@@ -6,18 +6,16 @@
 
 {% block javascript %}
     <script>
-
-        var data = JSON.parse("{{ original_data|escapejs }}");
-
-        {% if javascript_enabled %}
-            {{ javascript_code|safe }}
-        {% endif %}
-
         $(document).ready(function(){
             var canvas = $("#ChartJS{{ element_pk }}");
             var context = canvas.get(0).getContext('2d');
             var container = canvas.parent();
-            var chart = new Chart(context).Bar(data);
+            var chart = null;
+            var data = JSON.parse("{{ original_data|escapejs }}");
+
+            {% if javascript_enabled %}
+                {{ javascript_code|safe }}
+            {% endif %}
 
             $(window).resize(resizeCanvas);
 
@@ -25,8 +23,13 @@
                 canvas.attr('width', $(container).width());
                 canvas.attr('height', $(container).height());
 
-                chart.destroy();
-                chart = new Chart(context).Bar(data);
+                if (chart) {
+                    chart.destroy();
+                }
+                chart = new Chart(context).Bar(data, {
+                    scaleFontColor: "#fff",
+                    scaleFontFamily: "'Raleway', sans-serif"
+                });
             }
             resizeCanvas();
         });
