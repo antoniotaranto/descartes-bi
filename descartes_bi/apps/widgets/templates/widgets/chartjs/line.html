@@ -17,6 +17,20 @@
                 {{ javascript_code|safe }}
             {% endif %}
 
+            colorValue = 250;
+
+            $.each(data.datasets, function(index, value) {
+                    colorValue = colorValue - 50;
+                $.extend(true, data.datasets[index], {
+                    fillColor: 'rgba(' + colorValue + ',' + colorValue + ',' + colorValue + ',' + '0.1)',
+                    strokeColor: 'rgba(' + colorValue + ',' + colorValue + ',' + colorValue + ',' + '1)',
+                    pointColor: 'rgba(' + colorValue + ',' + colorValue + ',' + colorValue + ',' + '1)',
+                    pointStrokeColor: '#fff',
+                    pointHighlightFill: '#fff',
+                    pointHighlightStroke: 'rgba(' + colorValue + ',' + colorValue + ',' + colorValue +','+'1)',
+                });
+            });
+
             $(window).resize(resizeCanvas);
 
             function resizeCanvas(){
@@ -26,20 +40,6 @@
                 if (chart) {
                     chart.destroy();
                 }
-
-                colorValue = 250;
-
-                $.each(data.datasets, function(index, value) {
-                        colorValue = colorValue - 50;
-                    $.extend(true, data.datasets[index], {
-                        fillColor: 'rgba(' + colorValue + ',' + colorValue + ',' + colorValue + ',' + '0.1)',
-                        strokeColor: 'rgba(' + colorValue + ',' + colorValue + ',' + colorValue + ',' + '1)',
-                        pointColor: 'rgba(' + colorValue + ',' + colorValue + ',' + colorValue + ',' + '1)',
-                        pointStrokeColor: '#fff',
-                        pointHighlightFill: '#fff',
-                        pointHighlightStroke: 'rgba(' + colorValue + ',' + colorValue + ',' + colorValue +','+'1)',
-                    });
-                });
 
                 chart = new Chart(context).Line(data, {
                     scaleFontColor: '#fff',
