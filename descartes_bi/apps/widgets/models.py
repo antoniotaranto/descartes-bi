@@ -120,13 +120,6 @@ class ChartJSWidget(WidgetBase):
                 'labels': [result[self.labels_element] for result in context['original_data']],
                 'datasets': [
                     {
-                        'label': "My First dataset",
-                        'fillColor': "rgba(220,220,220,0.2)",
-                        'strokeColor': "rgba(220,220,220,1)",
-                        'pointColor': "rgba(220,220,220,1)",
-                        'pointStrokeColor': "#fff",
-                        'pointHighlightFill': "#fff",
-                        'pointHighlightStroke': "rgba(220,220,220,1)",
                         'data': [result[self.data_element] for result in context['original_data']],
                    }
                ]
@@ -240,3 +233,53 @@ class ChartJSRadarWidget(ChartJSWidget):
     """
 
 ChartJSRadarWidget._meta.get_field('javascript_code').default = ChartJSRadarWidget.default_javascript
+
+
+class ChartJSPieWidget(ChartJSWidget):
+    template_name = 'widgets/chartjs/pie.html'
+    widget_type = _('ChartJS pie chart widget')
+
+    default_javascript = """
+        var data = [
+            {
+                value: 300,
+                color:"#F7464A",
+                highlight: "#FF5A5E",
+                label: "Big"
+            },
+            {
+                value: 50,
+                color: "#46BFBD",
+                highlight: "#5AD3D1",
+                label: "Small"
+            },
+            {
+                value: 100,
+                color: "#FDB45C",
+                highlight: "#FFC870",
+                label: "Medium"
+            }
+        ]
+    """
+
+    def get_context(self):
+        context = super(ChartJSPieWidget, self).get_context()
+
+        if self.datasource:
+            result = [{'label': result[self.labels_element], 'value': result[self.data_element]} for result in context['original_data']]
+
+            context.update({
+                'original_data': json.dumps(result),
+            })
+        return context
+
+
+ChartJSPieWidget._meta.get_field('javascript_code').default = ChartJSPieWidget.default_javascript
+
+
+class ChartJSDoughnutWidget(ChartJSPieWidget):
+    template_name = 'widgets/chartjs/doughnut.html'
+    widget_type = _('ChartJS doughnut chart widget')
+
+
+ChartJSDoughnutWidget._meta.get_field('javascript_code').default = ChartJSDoughnutWidget.default_javascript
