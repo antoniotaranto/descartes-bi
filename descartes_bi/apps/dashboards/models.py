@@ -16,6 +16,7 @@ class Dashboard(models.Model):
     label = models.CharField(max_length=96, verbose_name=_('Label'))
     icon_code = models.TextField(blank=True, default='<i class="fa fa-tachometer"></i>', verbose_name=_('Icon code'))
     description = models.TextField(blank=True, verbose_name=_('Description'))
+    full_screen = models.BooleanField(default=False, verbose_name=_('Full screen'))
 
     def __str__(self):
         return self.label

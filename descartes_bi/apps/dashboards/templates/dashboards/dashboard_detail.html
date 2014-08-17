@@ -4,7 +4,7 @@
 {% load static %}
 
 {% block content %}
-    <div class="container">
+    <div class="container{% if dashboard.full_screen %}-fluid{% endif %}">
         {% for row in dashboard.get_element_rows %}
             <div class="row">
                 {% for element in row %}
