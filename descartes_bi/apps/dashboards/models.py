@@ -17,6 +17,7 @@ class Dashboard(models.Model):
     icon_code = models.TextField(blank=True, default='<i class="fa fa-tachometer"></i>', verbose_name=_('Icon code'))
     description = models.TextField(blank=True, verbose_name=_('Description'))
     full_screen = models.BooleanField(default=False, verbose_name=_('Full screen'))
+    order = models.PositiveIntegerField(blank=True, null=True, default=0, verbose_name=_('Order'))
 
     def __str__(self):
         return self.label
@@ -43,6 +44,7 @@ class Dashboard(models.Model):
         return rows
 
     class Meta:
+        ordering = ('order',)
         verbose_name = _('Dashboard')
         verbose_name_plural = _('Dashboards')
 
