@@ -29,6 +29,7 @@ class Host(models.Model):
 class Datasource(models.Model):
     host = models.ForeignKey(Host, verbose_name=_('Host'))
     label = models.CharField(verbose_name=_('Label'), max_length=96)
+    description = models.TextField(blank=True, verbose_name=_('Description'))
     path = models.TextField(verbose_name=_('Path'), help_text=_('Enter the URL path, query and fragment. For example: /very-long-url-path/?argument=value&second-argument=value'))
     data_format = models.PositiveIntegerField(choices=DATASOURCE_FORMAT_CHOICES, verbose_name=_('Data format'))
     python_code = models.TextField(blank=True, verbose_name=_('Python'), help_text=_('Python code block executed after fetching the data from the datasource. An "original_data" variable is passed to the script and a "python_data" variable is expected. This code is executed at the server.'))
@@ -61,5 +62,6 @@ class Datasource(models.Model):
             return '{}{}'.format(self.host.netloc, self.path)
 
     class Meta:
+        ordering = ('label',)
         verbose_name = _('Datasource')
         verbose_name_plural = _('Datasources')
