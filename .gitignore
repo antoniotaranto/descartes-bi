@@ -3,6 +3,7 @@
 *.pyo
 settings_local.py
 *.swp
+*egg*
 *.sqlite?
 /venv/
 /descartesEnv/
@@ -11,3 +12,4 @@ settings_local.py
 .py~
 /static/
 /.idea/
+/dist/

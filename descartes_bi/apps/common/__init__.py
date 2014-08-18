@@ -1,17 +1,60 @@
-#
-#    Copyright (C) 2010  Roberto Rosario
-#    This file is part of descartes-bi.
-#
-#    descartes-bi is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
-#
-#    descartes-bi is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
-#
-#    You should have received a copy of the GNU General Public License
-#    along with descartes-bi.  If not, see <http://www.gnu.org/licenses/>.
-#
+from __future__ import unicode_literals
+
+import logging
+
+from django.contrib.auth import models as auth_models
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.utils.translation import ugettext_lazy as _
+
+from south.signals import post_migrate
+
+from .settings import (AUTO_ADMIN_USERNAME, AUTO_ADMIN_PASSWORD,
+                            AUTO_CREATE_ADMIN)
+from .models import AutoAdminSingleton
+
+logger = logging.getLogger(__name__)
+
+
+@receiver(post_migrate, dispatch_uid='create_superuser_and_anonymous_user')
+def create_superuser_and_anonymous_user(sender, **kwargs):
+    """
+    From https://github.com/lambdalisue/django-qwert/blob/master/qwert/autoscript/__init__.py
+    From http://stackoverflow.com/questions/1466827/ --
+
+    Prevent interactive question about wanting a superuser created. (This code
+    has to go in this otherwise empty "models" module so that it gets processed by
+    the "syncdb" command during database creation.)
+
+    Create our own admin super user automatically.
+    """
+    if kwargs['app'] == 'common':
+        AutoAdminSingleton.objects.get_or_create()
+
+        if AUTO_CREATE_ADMIN:
+            try:
+                auth_models.User.objects.get(username=AUTO_ADMIN_USERNAME)
+            except auth_models.User.DoesNotExist:
+                logger.info('Creating super admin user -- login: %s, password: %s' % (AUTO_ADMIN_USERNAME, AUTO_ADMIN_PASSWORD))
+                assert auth_models.User.objects.create_superuser(AUTO_ADMIN_USERNAME, 'autoadmin@autoadmin.com', AUTO_ADMIN_PASSWORD)
+                admin = auth_models.User.objects.get(username=AUTO_ADMIN_USERNAME)
+                # Store the auto admin password properties to display the first login message
+                auto_admin_properties, created = AutoAdminSingleton.objects.get_or_create()
+                auto_admin_properties.account = admin
+                auto_admin_properties.password = AUTO_ADMIN_PASSWORD
+                auto_admin_properties.password_hash = admin.password
+                auto_admin_properties.save()
+            else:
+                logger.info('Super admin user already exists. -- login: %s' % AUTO_ADMIN_USERNAME)
+
+
+@receiver(post_save, dispatch_uid='auto_admin_account_passwd_change', sender=User)
+def auto_admin_account_passwd_change(sender, instance, **kwargs):
+    auto_admin_properties = AutoAdminSingleton.objects.get()
+    if instance == auto_admin_properties.account and instance.password != auto_admin_properties.password_hash:
+        # Only delete the auto admin properties when the password has been changed
+        auto_admin_properties.account = None
+        auto_admin_properties.password = None
+        auto_admin_properties.password_hash = None
+        auto_admin_properties.save()
