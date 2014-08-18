@@ -5,6 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from suit.admin import SortableModelAdmin, SortableStackedInline
 
+from .admin_forms import DashboardForm
 from .models import Dashboard, DashboardElement
 
 
@@ -16,6 +17,7 @@ class DashboardElementInline(SortableStackedInline):
 
 
 class DashboardAdmin(SortableModelAdmin):
+    form = DashboardForm
     inlines = [DashboardElementInline]
     list_display = ('label', 'description', 'full_screen', 'order')
     list_editable = ('full_screen',)
