@@ -8,7 +8,7 @@ from django.shortcuts import render_to_response
 from django.template import loader
 from django.views.generic import TemplateView
 
-from dashboards.models import Dashboard
+from dashboards.views import DashboardListView
 
 logger = logging.getLogger(__name__)
 
@@ -20,8 +20,8 @@ def set_language(request):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
-class HomeView(TemplateView):
-    template_name = 'core/home.html'
+class HomeView(DashboardListView):
+    pass
 
 
 class AboutView(TemplateView):
