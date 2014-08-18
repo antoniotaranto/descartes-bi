@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
+from .admin_forms import WidgetForm
 from .models import (ChartJSBarWidget, ChartJSDoughnutWidget, ChartJSLineWidget,
                      ChartJSPieWidget, ChartJSRadarWidget, ExpressionWidget,
                      JustgageWidget, MessageWidget, NovusLineChartWidget,
@@ -10,6 +11,7 @@ from .models import (ChartJSBarWidget, ChartJSDoughnutWidget, ChartJSLineWidget,
 
 
 class WidgetdAdmin(admin.ModelAdmin):
+    form = WidgetForm
     list_display = ('label', 'datasource', 'python_enabled', 'javascript_enabled')
     list_editable = ('datasource', 'python_enabled', 'javascript_enabled')
 
