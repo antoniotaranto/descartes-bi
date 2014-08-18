@@ -6,7 +6,7 @@ server {
     listen 80;
 
     access_log off;
-    error_log /var/log/nginx/intrinsecus_error.log;
+    error_log /var/log/nginx/descartes-bi_error.log;
 
     gzip                on;
     gzip_http_version   1.0;
@@ -41,7 +41,7 @@ application/xml application/xml+rss text/javascript;
     }
 
     location /favicon.ico {
-        alias /lib/python2.7/site-packages/descartes_bi/apps/core/static/core/images/favicon.ico;
+        alias /usr/share/descartes-bi/lib/python2.7/site-packages/descartes_bi/media/static/core/images/favicon.ico;
     }
 }
 

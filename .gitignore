@@ -13,3 +13,4 @@ settings_local.py
 /static/
 /.idea/
 /dist/
+/descartes_bi/settings/local.py
