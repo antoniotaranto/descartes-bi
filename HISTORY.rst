@@ -1,8 +1,7 @@
 2.0 (2014-08-??)
 ================
 
-- Updated to use Django 1.6
-- Registered project for translation at https://www.transifex.com/projects/p/django-inventory/
+- Updated to use Django 1.6.5
 - Code cleanups
 - Conversion of view to class based views
 - Capitalization of string
