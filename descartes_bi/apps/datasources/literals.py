@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 from django.utils.translation import ugettext_lazy as _
 
 DATASOURCE_FORMAT_TEXT = 1
