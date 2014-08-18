@@ -18,7 +18,7 @@ class WidgetBase(models.Model):
 
     python_code = models.TextField(blank=True, verbose_name=_('Python'), help_text=_('Python code block executed after fetching the data from the datasource. An "original_data" variable is passed to the script and a "python_data" variable is expected. This code is executed at the server.'))
     python_enabled = models.BooleanField(default=False, verbose_name=_('Python enabled'))
-    javascript_code = models.TextField(blank=True, verbose_name=_('Javascript'), help_text=_('Javascript code block executed after the Python code executes. An "original_data" variable is passed to the script. This code is executed at the browser.'))
+    javascript_code = models.TextField(blank=True, verbose_name=_('Javascript'), help_text=_('Javascript code block executed after the Python code executes. An "original_data" variable is passed to the script, and should return a "data" value. This code is executed at the browser.'))
     javascript_enabled = models.BooleanField(default=True, verbose_name=_('Javascript enabled'))
 
     objects = InheritanceManager()
@@ -143,132 +143,28 @@ class ChartJSLineWidget(ChartJSWidget):
     template_name = 'widgets/chartjs/line.html'
     widget_type = _('ChartJS line chart widget')
 
-    default_javascript = """
-        var data = {
-            labels: ["January", "February", "March", "April", "May", "June", "July"],
-            datasets: [
-                {
-                    label: "My First dataset",
-                    fillColor: "rgba(220,220,220,0.2)",
-                    strokeColor: "rgba(220,220,220,1)",
-                    pointColor: "rgba(220,220,220,1)",
-                    pointStrokeColor: "#fff",
-                    pointHighlightFill: "#fff",
-                    pointHighlightStroke: "rgba(220,220,220,1)",
-                    data: [65, 59, 80, 81, 56, 55, 40]
-                },
-                {
-                    label: "My Second dataset",
-                    fillColor: "rgba(151,187,205,0.2)",
-                    strokeColor: "rgba(151,187,205,1)",
-                    pointColor: "rgba(151,187,205,1)",
-                    pointStrokeColor: "#fff",
-                    pointHighlightFill: "#fff",
-                    pointHighlightStroke: "rgba(151,187,205,1)",
-                    data: [28, 48, 40, 19, 86, 27, 90]
-                }
-            ]
-        };
-    """
-
-ChartJSLineWidget._meta.get_field('javascript_code').default = ChartJSLineWidget.default_javascript
-
 
 class ChartJSBarWidget(ChartJSWidget):
     template_name = 'widgets/chartjs/bar.html'
     widget_type = _('ChartJS bar chart widget')
-
-    default_javascript = """
-        var data = {
-            labels: ["January", "February", "March", "April", "May", "June", "July"],
-            datasets: [
-                {
-                    label: "My First dataset",
-                    fillColor: "rgba(220,220,220,0.5)",
-                    strokeColor: "rgba(220,220,220,0.8)",
-                    highlightFill: "rgba(220,220,220,0.75)",
-                    highlightStroke: "rgba(220,220,220,1)",
-                    data: [65, 59, 80, 81, 56, 55, 40]
-                },
-                {
-                    label: "My Second dataset",
-                    fillColor: "rgba(151,187,205,0.5)",
-                    strokeColor: "rgba(151,187,205,0.8)",
-                    highlightFill: "rgba(151,187,205,0.75)",
-                    highlightStroke: "rgba(151,187,205,1)",
-                    data: [28, 48, 40, 19, 86, 27, 90]
-                }
-            ]
-        };
-    """
-
-ChartJSBarWidget._meta.get_field('javascript_code').default = ChartJSBarWidget.default_javascript
 
 
 class ChartJSRadarWidget(ChartJSWidget):
     template_name = 'widgets/chartjs/radar.html'
     widget_type = _('ChartJS radar chart widget')
 
-    default_javascript = """
-        var data = {
-            labels: ["Eating", "Drinking", "Sleeping", "Designing", "Coding", "Cycling", "Running"],
-            datasets: [
-                {
-                    label: "My First dataset",
-                    fillColor: "rgba(220,220,220,0.2)",
-                    strokeColor: "rgba(220,220,220,1)",
-                    pointColor: "rgba(220,220,220,1)",
-                    pointStrokeColor: "#fff",
-                    pointHighlightFill: "#fff",
-                    pointHighlightStroke: "rgba(220,220,220,1)",
-                    data: [65, 59, 90, 81, 56, 55, 40]
-                },
-                {
-                    label: "My Second dataset",
-                    fillColor: "rgba(151,187,205,0.2)",
-                    strokeColor: "rgba(151,187,205,1)",
-                    pointColor: "rgba(151,187,205,1)",
-                    pointStrokeColor: "#fff",
-                    pointHighlightFill: "#fff",
-                    pointHighlightStroke: "rgba(151,187,205,1)",
-                    data: [28, 48, 40, 19, 96, 27, 100]
-                }
-            ]
-        };
-    """
-
-ChartJSRadarWidget._meta.get_field('javascript_code').default = ChartJSRadarWidget.default_javascript
-
 
 class ChartJSPieWidget(ChartJSWidget):
     template_name = 'widgets/chartjs/pie.html'
     widget_type = _('ChartJS pie chart widget')
 
-    default_javascript = """
-        var data = [
-            {
-                value: 300,
-                color:"#F7464A",
-                highlight: "#FF5A5E",
-                label: "Big"
-            },
-            {
-                value: 50,
-                color: "#46BFBD",
-                highlight: "#5AD3D1",
-                label: "Small"
-            },
-            {
-                value: 100,
-                color: "#FDB45C",
-                highlight: "#FFC870",
-                label: "Medium"
-            }
-        ]
-    """
-
     def get_context(self):
-        context = super(ChartJSPieWidget, self).get_context()
+        context = {
+            'javascript_code': self.javascript_code,
+            'javascript_enabled': self.javascript_enabled,
+            'original_data': self.get_data(),
+            'original_data_json': json.dumps(self.get_data()),
+        }
 
         if self.datasource:
             result = [{'label': result[self.labels_element], 'value': result[self.data_element]} for result in context['original_data']]
@@ -279,12 +175,6 @@ class ChartJSPieWidget(ChartJSWidget):
         return context
 
 
-ChartJSPieWidget._meta.get_field('javascript_code').default = ChartJSPieWidget.default_javascript
-
-
 class ChartJSDoughnutWidget(ChartJSPieWidget):
     template_name = 'widgets/chartjs/doughnut.html'
     widget_type = _('ChartJS doughnut chart widget')
-
-
-ChartJSDoughnutWidget._meta.get_field('javascript_code').default = ChartJSDoughnutWidget.default_javascript
