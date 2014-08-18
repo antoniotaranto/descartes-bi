@@ -19,8 +19,8 @@ class DashboardElementInline(SortableStackedInline):
 class DashboardAdmin(SortableModelAdmin):
     form = DashboardForm
     inlines = [DashboardElementInline]
-    list_display = ('label', 'description', 'full_screen', 'order')
-    list_editable = ('full_screen',)
+    list_display = ('label', 'description', 'enabled', 'full_screen', 'order')
+    list_editable = ('enabled', 'full_screen',)
     sortable = 'order'
     suit_form_tabs = (('configuration', _('Configuration')), ('elements', _('Elements')))
 

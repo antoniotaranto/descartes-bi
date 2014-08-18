@@ -15,6 +15,7 @@ from widgets.models import WidgetBase
 class Dashboard(models.Model):
     label = models.CharField(max_length=96, verbose_name=_('Label'))
     description = models.TextField(blank=True, verbose_name=_('Description'))
+    enabled = models.BooleanField(default=True, verbose_name=_('Enabled'))
     full_screen = models.BooleanField(default=False, verbose_name=_('Full screen'))
     order = models.PositiveIntegerField(blank=True, null=True, default=0, verbose_name=_('Order'))
 

@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 class DashboardListView(ListView):
     context_object_name = 'dashboards'
-    model = Dashboard
+    queryset = Dashboard.objects.filter(enabled=True)
 
 
 class DashboardDetailView(DetailView):
