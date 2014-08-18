@@ -63,5 +63,6 @@ class Datasource(models.Model):
 
     class Meta:
         ordering = ('label',)
+        unique_together = ('host', 'label')
         verbose_name = _('Datasource')
         verbose_name_plural = _('Datasources')
