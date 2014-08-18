@@ -19,7 +19,7 @@ class WidgetBase(models.Model):
     python_code = models.TextField(blank=True, verbose_name=_('Python'), help_text=_('Python code block executed after fetching the data from the datasource. An "original_data" variable is passed to the script and a "python_data" variable is expected. This code is executed at the server.'))
     python_enabled = models.BooleanField(default=False, verbose_name=_('Python enabled'))
     javascript_code = models.TextField(blank=True, verbose_name=_('Javascript'), help_text=_('Javascript code block executed after the Python code executes. An "original_data" variable is passed to the script, and should return a "data" value. This code is executed at the browser.'))
-    javascript_enabled = models.BooleanField(default=True, verbose_name=_('Javascript enabled'))
+    javascript_enabled = models.BooleanField(default=False, verbose_name=_('Javascript enabled'))
 
     objects = InheritanceManager()
 
