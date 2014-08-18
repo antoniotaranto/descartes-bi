@@ -11,10 +11,12 @@
             var context = canvas.get(0).getContext('2d');
             var container = canvas.parent();
             var chart = null;
-            var data = JSON.parse("{{ original_data|escapejs }}");
+            var original_data = JSON.parse("{{ original_data|escapejs }}");
 
             {% if javascript_enabled %}
                 {{ javascript_code|safe }}
+            {% else %}
+                var data = original_data;
             {% endif %}
 
             $(window).resize(resizeCanvas);

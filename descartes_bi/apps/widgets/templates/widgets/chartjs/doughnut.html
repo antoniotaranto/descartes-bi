@@ -17,10 +17,13 @@
                 {{ javascript_code|safe }}
             {% endif %}
 
-            colorValue = 250;
+            colorValue = 255;
 
             $.each(data, function(index, value) {
-                colorValue = colorValue - 50;
+                colorValue = colorValue - 10;
+                if (colorValue < 0) {
+                    colorValue = 255;
+                }
                 $.extend(true, data[index], {
                     color: 'rgba(' + colorValue + ',' + colorValue + ',' + colorValue + ',' + '0.1)',
                     highlight: 'rgba(' + colorValue + ',' + colorValue + ',' + colorValue + ',' + '.5)',
