@@ -141,6 +141,10 @@ STATICFILES_FINDERS = (
     'compressor.finders.CompressorFinder',
 )
 
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'descartes_bi', 'templates')
+)
+
 # ===== Configuration options ===============
 
 # --------- Django -------------------
