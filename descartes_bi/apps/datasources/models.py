@@ -32,7 +32,7 @@ class Datasource(models.Model):
     description = models.TextField(blank=True, verbose_name=_('Description'))
     path = models.TextField(verbose_name=_('Path'), help_text=_('Enter the URL path, query and fragment. For example: /very-long-url-path/?argument=value&second-argument=value'))
     data_format = models.PositiveIntegerField(choices=DATASOURCE_FORMAT_CHOICES, verbose_name=_('Data format'))
-    python_code = models.TextField(blank=True, verbose_name=_('Python'), help_text=_('Python code block executed after fetching the data from the datasource. An "original_data" variable is passed to the script and a "python_data" variable is expected. This code is executed at the server.'))
+    python_code = models.TextField(blank=True, verbose_name=_('Python code'), help_text=_('Python code block executed after fetching the data from the datasource. An "original_data" variable is passed to the script and a "python_data" variable is expected. This code is executed at the server.'))
     python_enabled = models.BooleanField(default=False, verbose_name=_('Python enabled'))
 
     def __str__(self):
