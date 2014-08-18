@@ -7,7 +7,6 @@ from .models import Dashboard
 
 logger = logging.getLogger(__name__)
 
-# TODO: login required
 
 class DashboardListView(ListView):
     context_object_name = 'dashboards'

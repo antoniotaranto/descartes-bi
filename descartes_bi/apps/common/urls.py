@@ -1,13 +1,14 @@
 from django.conf import settings
 from django.conf.urls import patterns, url
+from django.contrib.auth.decorators import login_required
 from django.views.generic.base import RedirectView
 
 from .views import AboutView, HomeView
 
 urlpatterns = patterns('common.views',
-    url(r'^$', HomeView.as_view(), name='home_view'),
+    url(r'^$', login_required(HomeView.as_view()), name='home_view'),
     url(r'^set_language/$', 'set_language', name='set_language'),
-    url(r'^about/$', AboutView.as_view(), name='about_view'),
+    url(r'^about/$', login_required(AboutView.as_view()), name='about_view'),
 )
 
 urlpatterns += patterns('',
