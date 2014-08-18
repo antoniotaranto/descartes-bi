@@ -96,7 +96,7 @@ setup(
     name=PACKAGE_NAME,
     packages=find_packages(PACKAGE_DIR),
     platforms=['any'],
-    scripts=['descartes_bi/bin/descarte-bi.py'],
+    scripts=['descartes_bi/bin/descartes-bi.py'],
     url='https://github.com/rosarior/descartes_bi',
     version=descartes_bi.__version__,
     zip_safe=False,
