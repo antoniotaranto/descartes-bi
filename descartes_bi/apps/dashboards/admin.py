@@ -18,13 +18,14 @@ class DashboardElementInline(SortableStackedInline):
 class DashboardAdmin(SortableModelAdmin):
     inlines = [DashboardElementInline]
     list_display = ('label', 'description', 'full_screen', 'order')
+    list_editable = ('full_screen',)
     sortable = 'order'
     suit_form_tabs = (('configuration', _('Configuration')), ('elements', _('Elements')))
 
     fieldsets = (
         (_('Basic information'), {
             'classes': ('suit-tab suit-tab-configuration',),
-            'fields': ('label', 'description', 'icon_code', 'full_screen')
+            'fields': ('label', 'description', 'full_screen')
         }),
     )
 
