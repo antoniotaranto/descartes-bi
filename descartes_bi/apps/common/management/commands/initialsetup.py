@@ -6,14 +6,14 @@ from django.utils.crypto import get_random_string
 
 
 class Command(management.BaseCommand):
-    help = 'Gets Mayan EDMS ready to be used (initializes database, creates a secret key, etc).'
+    help = 'Gets Descartes BI ready to be used (initializes database, creates a secret key, etc).'
 
     def _generate_secret_key(self):
         chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
         return get_random_string(50, chars)
 
     def handle(self, *args, **options):
-        with open(os.path.join(settings.BASE_DIR, 'mayan', 'settings', 'local.py'), 'w+') as file_object:
+        with open(os.path.join(settings.BASE_DIR, 'descartes_bi', 'settings', 'local.py'), 'w+') as file_object:
             file_object.write('\n'.join([
                 'from __future__ import absolute_import',
                 'from .base import *',
