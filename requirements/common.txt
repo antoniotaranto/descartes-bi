@@ -1,6 +1,7 @@
 cssmin==0.2.0
 
 Django==1.6.5
+django-autoadmin==0.5.0
 django-compressor==1.4
 django-model-utils==2.2
 django-solo==1.0.5

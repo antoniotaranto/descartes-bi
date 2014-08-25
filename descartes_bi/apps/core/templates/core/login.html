@@ -102,8 +102,8 @@
     </head>
 
     <body>
-        {% auto_admin_properties %}
-        {% if auto_admin_properties.account %}
+        {% autoadmin_properties %}
+        {% if autoadmin_properties.account %}
             <div class="container">
                 <div class="row">
                     <div class="col-md-6 col-md-offset-3">
@@ -116,9 +116,9 @@
                                 <div class="content login">
                                     <p>{% trans 'You have just finished installing <strong>Descartes BI</strong>, congratulations!' %}</p>
                                     <p>{% trans 'Login using the following credentials:' %}</p>
-                                    <p>{% blocktrans with auto_admin_properties.account as account %}Username: <strong>{{ account }}</strong>{% endblocktrans %}</p>
-                                    <p>{% blocktrans with auto_admin_properties.account.email as email %}Email: <strong>{{ email }}</strong>{% endblocktrans %}</p>
-                                    <p>{% blocktrans with auto_admin_properties.password as password %}Password: <strong>{{ password }}</strong>{% endblocktrans %}</p>
+                                    <p>{% blocktrans with autoadmin_properties.account as account %}Username: <strong>{{ account }}</strong>{% endblocktrans %}</p>
+                                    <p>{% blocktrans with autoadmin_properties.account.email as email %}Email: <strong>{{ email }}</strong>{% endblocktrans %}</p>
+                                    <p>{% blocktrans with autoadmin_properties.password as password %}Password: <strong>{{ password }}</strong>{% endblocktrans %}</p>
                                     <p>{% trans 'Be sure to change the password to increase security and to disable this message.' %}</p>
                                 </div>
                             </div>
