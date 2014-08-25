@@ -7,6 +7,8 @@ Descartes BI
 
 Free Open Source web based business intelligence software
 
+|Screenshot|
+
 License
 -------
 
@@ -55,3 +57,5 @@ Roberto Rosario - **Twitter** http://twitter.com/siloraptor **E-mail** roberto.r
 .. |Wheel badge| image:: http://img.shields.io/badge/wheel-yes-green.svg?style=flat
 .. |License badge| image:: http://img.shields.io/badge/license-Apache%202.0-green.svg?style=flat
 .. |Logo| image:: https://github.com/rosarior/descartes-bi/raw/master/descartes_bi/apps/core/static/core/images/logo_black.png
+.. |Screenshot| image:: https://github.com/rosarior/descartes-bi/raw/master/docs/_static/screenshot.png
+
