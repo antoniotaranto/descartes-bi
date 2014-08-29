@@ -14,7 +14,6 @@ from datasources.models import Datasource
 @python_2_unicode_compatible
 class WidgetBase(models.Model):
     label = models.CharField(max_length=128, verbose_name=_('Label'))
-    datasource = models.ForeignKey(Datasource, null=True, blank=True, verbose_name=_('Datasource'))
 
     python_code = models.TextField(blank=True, verbose_name=_('Python'), help_text=_('Python code block executed after fetching the data from the datasource. An "original_data" variable is passed to the script and a "python_data" variable is expected. This code is executed at the server.'))
     python_enabled = models.BooleanField(default=False, verbose_name=_('Python enabled'))
@@ -51,6 +50,11 @@ class WidgetBase(models.Model):
 
     class Meta:
         ordering = ('label',)
+
+
+class WidgetDataset(models.Model):
+    widget = models.ForeignKey(Widget, verbose_name=_('Widget'))
+    datasource = models.ForeignKey(Datasource, verbose_name=_('Datasource'))
 
 
 class ExpressionWidget(WidgetBase):
